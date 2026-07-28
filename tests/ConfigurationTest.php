@@ -27,4 +27,26 @@ final class ConfigurationTest extends TestCase
 
         self::assertContains(config_path('nuewire/filesystem.php'), array_values($paths));
     }
+
+    public function test_views_and_translations_use_the_shared_vendor_directory(): void
+    {
+        $viewPaths = ServiceProvider::pathsToPublish(
+            FilesystemServiceProvider::class,
+            'nuewire-filesystem-views',
+        );
+
+        $translationPaths = ServiceProvider::pathsToPublish(
+            FilesystemServiceProvider::class,
+            'nuewire-filesystem-translations',
+        );
+
+        self::assertContains(
+            resource_path('views/vendor/nuewire/filesystem'),
+            array_values($viewPaths),
+        );
+        self::assertContains(
+            lang_path('vendor/nuewire/filesystem'),
+            array_values($translationPaths),
+        );
+    }
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Publish views and translations under the shared `vendor/nuewire/filesystem` directory.
+
 ## 1.0.1
 
 - Fix Platform menu registration so it is independent of service provider order.

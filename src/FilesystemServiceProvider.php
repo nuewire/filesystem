@@ -69,11 +69,11 @@ final class FilesystemServiceProvider extends ServiceProvider
         ], 'nuewire-filesystem-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire-filesystem'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire/filesystem'),
         ], 'nuewire-filesystem-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire-filesystem'),
+            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire/filesystem'),
         ], 'nuewire-filesystem-translations');
     }
 
