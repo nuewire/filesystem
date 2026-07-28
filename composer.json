@@ -1,0 +1,61 @@
+{
+    "name": "btekno/filesystem",
+    "description": "Encrypted, file-based filesystem settings for Laravel with a single Livewire component.",
+    "keywords": [
+        "laravel",
+        "livewire",
+        "filesystem",
+        "s3",
+        "bunnycdn"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Btekno"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/auth": "^11.0|^12.0|^13.0",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "illuminate/encryption": "^11.0|^12.0|^13.0",
+        "illuminate/filesystem": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
+        "illuminate/translation": "^11.0|^12.0|^13.0",
+        "illuminate/validation": "^11.0|^12.0|^13.0",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "livewire/livewire": "^3.6|^4.0.3",
+        "psr/log": "^1.1|^2.0|^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0|^11.0",
+        "phpunit/phpunit": "^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Btekno\\Filesystem\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Btekno\\Filesystem\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Btekno\\Filesystem\\FilesystemServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "php -l src/FilesystemServiceProvider.php"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "suggest": {
+        "btekno/platform": "Adds the shared Btekno admin layout and navigation."
+    }
+}
