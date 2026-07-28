@@ -51,6 +51,8 @@ final class FilesystemServiceProvider extends ServiceProvider
             );
         });
 
+        $this->registerPlatformNavigation();
+
         // Apply before application providers start using the default filesystem.
         $this->app->make(RuntimeFilesystemConfigurator::class)->apply();
     }
@@ -61,7 +63,6 @@ final class FilesystemServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-filesystem');
 
         $this->registerLivewireComponent();
-        $this->registerPlatformNavigation();
 
         $this->publishes([
             __DIR__.'/../config/nuewire/filesystem.php' => config_path('nuewire/filesystem.php'),
@@ -97,17 +98,19 @@ final class FilesystemServiceProvider extends ServiceProvider
     {
         $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
 
-        if (! $this->app->bound($registryClass)) {
-            return;
-        }
+        $this->app->afterResolving($registryClass, static function (object $registry): void {
+            if (! method_exists($registry, 'register')) {
+                return;
+            }
 
-        $this->app->make($registryClass)->register('filesystem', [
-            'label' => ['id' => 'Filesystem', 'en' => 'Filesystem'],
-            'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
-            'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
-            'component' => 'nuewire::filesystem',
-            'icon' => 'F',
-            'order' => 20,
-        ]);
+            $registry->register('filesystem', [
+                'label' => ['id' => 'Filesystem', 'en' => 'Filesystem'],
+                'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
+                'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
+                'component' => 'nuewire::filesystem',
+                'icon' => 'F',
+                'order' => 20,
+            ]);
+        });
     }
 }
