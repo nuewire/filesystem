@@ -13,7 +13,8 @@ use Nuewire\Filesystem\Support\StorageDirectory;
 use Illuminate\Filesystem\Filesystem as LaravelFilesystem;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
+use Nuewire\Support\LivewireComponentRegistrar;
+use Nuewire\Support\NuewirePaths;
 use Psr\Log\LoggerInterface;
 
 final class FilesystemServiceProvider extends ServiceProvider
@@ -60,35 +61,29 @@ final class FilesystemServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $paths = $this->app->make(NuewirePaths::class);
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nuewire-filesystem');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-filesystem');
 
         $this->registerLivewireComponent();
 
         $this->publishes([
-            __DIR__.'/../config/nuewire/filesystem.php' => config_path('nuewire/filesystem.php'),
+            __DIR__.'/../config/nuewire/filesystem.php' => $paths->configFile('filesystem'),
         ], 'nuewire-filesystem-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire/filesystem'),
+            __DIR__.'/../resources/views' => $paths->publishedViews('filesystem'),
         ], 'nuewire-filesystem-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire/filesystem'),
+            __DIR__.'/../resources/lang' => $paths->publishedTranslations('filesystem'),
         ], 'nuewire-filesystem-translations');
     }
 
     private function registerLivewireComponent(): void
     {
-        $livewire = $this->app->make('livewire');
-
-        if (method_exists($livewire, 'addComponent')) {
-            $livewire->addComponent('nuewire::filesystem', null, Filesystem::class);
-
-            return;
-        }
-
-        Livewire::component('nuewire::filesystem', Filesystem::class);
+        $registrar = $this->app->make(LivewireComponentRegistrar::class);
+        $registrar->register('nuewire::filesystem', Filesystem::class);
     }
 
     private function registerPlatformNavigation(): void

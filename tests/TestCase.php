@@ -6,6 +6,7 @@ namespace Nuewire\Filesystem\Tests;
 
 use Nuewire\Filesystem\FilesystemServiceProvider;
 use Livewire\LivewireServiceProvider;
+use Nuewire\Support\SupportServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -13,6 +14,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
+            SupportServiceProvider::class,
             LivewireServiceProvider::class,
             FilesystemServiceProvider::class,
         ];
