@@ -52,6 +52,7 @@ final class FilesystemServiceProvider extends ServiceProvider
         });
 
         $this->registerPlatformNavigation();
+        $this->registerAclPermissions();
 
         // Apply before application providers start using the default filesystem.
         $this->app->make(RuntimeFilesystemConfigurator::class)->apply();
@@ -81,12 +82,8 @@ final class FilesystemServiceProvider extends ServiceProvider
     {
         $livewire = $this->app->make('livewire');
 
-        if (method_exists($livewire, 'addNamespace')) {
-            Livewire::resolveMissingComponent(
-                static fn (string $name): ?string => $name === 'nuewire::filesystem'
-                    ? Filesystem::class
-                    : null,
-            );
+        if (method_exists($livewire, 'addComponent')) {
+            $livewire->addComponent('nuewire::filesystem', null, Filesystem::class);
 
             return;
         }
@@ -108,9 +105,26 @@ final class FilesystemServiceProvider extends ServiceProvider
                 'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
                 'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
                 'component' => 'nuewire::filesystem',
+                'permission' => 'filesystem.view',
                 'icon' => 'F',
                 'order' => 20,
             ]);
+        });
+    }
+
+    private function registerAclPermissions(): void
+    {
+        $registryClass = 'Nuewire\\Acl\\Registry\\PermissionRegistry';
+
+        $this->app->afterResolving($registryClass, static function (object $registry): void {
+            if (! method_exists($registry, 'registerMany')) {
+                return;
+            }
+
+            $registry->registerMany([
+                'filesystem.view' => ['id' => 'Melihat pengaturan filesystem', 'en' => 'View filesystem settings'],
+                'filesystem.manage' => ['id' => 'Mengubah pengaturan filesystem', 'en' => 'Manage filesystem settings'],
+            ], 'filesystem');
         });
     }
 }

@@ -74,7 +74,7 @@ final class Filesystem extends Component
         RuntimeFilesystemConfigurator $configurator,
         StorageDirectory $directories,
     ): void {
-        $this->ensureAuthorized();
+        $this->ensureAuthorized('filesystem.manage');
         $this->clearMessages();
 
         try {
@@ -97,7 +97,7 @@ final class Filesystem extends Component
         ConnectionTester $tester,
         StorageDirectory $directories,
     ): void {
-        $this->ensureAuthorized();
+        $this->ensureAuthorized('filesystem.manage');
         $this->clearMessages();
 
         try {
@@ -118,7 +118,7 @@ final class Filesystem extends Component
         RuntimeFilesystemConfigurator $configurator,
         StorageDirectory $directories,
     ): void {
-        $this->ensureAuthorized();
+        $this->ensureAuthorized('filesystem.manage');
         $this->driver = 'local';
         $this->save($store, $configurator, $directories);
     }
@@ -413,8 +413,24 @@ final class Filesystem extends Component
         return (string) trans("nuewire-filesystem::filesystem.{$key}", $replace, $this->locale);
     }
 
-    private function ensureAuthorized(): void
+    private function ensureAuthorized(string $permission = 'filesystem.view'): void
     {
+        $guard = trim((string) config('nuewire.filesystem.authorization.guard', ''));
+        $auth = $guard === '' ? Auth::guard() : Auth::guard($guard);
+        $user = $auth->user();
+
+        if (app()->bound('nuewire.acl.enabled')) {
+            if ($user === null || ! method_exists($user, 'can')) {
+                abort(403);
+            }
+
+            try {
+                abort_unless($user->can($permission), 403);
+            } catch (Throwable) {
+                abort(403);
+            }
+        }
+
         $gate = trim((string) config('nuewire.filesystem.authorization.gate', ''));
 
         if ($gate !== '') {
@@ -423,8 +439,7 @@ final class Filesystem extends Component
         }
 
         if ((bool) config('nuewire.filesystem.authorization.require_authenticated_user', true)) {
-            $guard = trim((string) config('nuewire.filesystem.authorization.guard', ''));
-            $authenticated = $guard === '' ? Auth::check() : Auth::guard($guard)->check();
+            $authenticated = $auth->check();
             abort_unless($authenticated, 403);
         }
     }
