@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Tests;
+namespace Nuewire\Filesystem\Tests;
 
-use Btekno\Filesystem\FilesystemServiceProvider;
+use Nuewire\Filesystem\FilesystemServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -22,11 +22,11 @@ abstract class TestCase extends Orchestra
     {
         $app['config']->set('app.key', 'base64:'.base64_encode(str_repeat('a', 32)));
         $app['config']->set('app.locale', 'en');
-        $app['config']->set('btekno.filesystem.locale', 'id');
-        $app['config']->set('btekno.filesystem.authorization.require_authenticated_user', false);
+        $app['config']->set('nuewire.filesystem.locale', 'id');
+        $app['config']->set('nuewire.filesystem.authorization.require_authenticated_user', false);
         $app['config']->set(
-            'btekno.filesystem.settings_path',
-            $app->storagePath('app/private/.btekno/filesystem.json'),
+            'nuewire.filesystem.settings_path',
+            $app->storagePath('app/private/.nuewire/filesystem.json'),
         );
     }
 }

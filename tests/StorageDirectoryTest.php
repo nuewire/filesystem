@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Tests;
+namespace Nuewire\Filesystem\Tests;
 
-use Btekno\Filesystem\Support\StorageDirectory;
+use Nuewire\Filesystem\Support\StorageDirectory;
 use InvalidArgumentException;
 
 final class StorageDirectoryTest extends TestCase

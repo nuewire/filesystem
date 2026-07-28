@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Support;
+namespace Nuewire\Filesystem\Support;
 
 use InvalidArgumentException;
 
@@ -10,7 +10,7 @@ final class StorageDirectory
 {
     public function normalize(mixed $value, ?string $locale = null): string
     {
-        $locale ??= (string) config('btekno.filesystem.locale', 'id');
+        $locale ??= (string) config('nuewire.filesystem.locale', 'id');
         $directory = trim((string) $value);
         $directory = str_replace('\\', '/', $directory);
         $directory = preg_replace('#/+#', '/', $directory) ?? $directory;
@@ -70,6 +70,6 @@ final class StorageDirectory
 
     private function translate(string $key, string $locale): string
     {
-        return (string) trans("btekno-filesystem::filesystem.{$key}", [], $locale);
+        return (string) trans("nuewire-filesystem::filesystem.{$key}", [], $locale);
     }
 }

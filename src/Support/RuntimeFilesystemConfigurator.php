@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Support;
+namespace Nuewire\Filesystem\Support;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Filesystem\FilesystemManager;
@@ -31,7 +31,7 @@ final class RuntimeFilesystemConfigurator
         try {
             $settings = $this->store->read();
         } catch (Throwable $exception) {
-            $this->logger->warning('Btekno filesystem settings could not be loaded. Local storage is active.', [
+            $this->logger->warning('Nuewire filesystem settings could not be loaded. Local storage is active.', [
                 'exception' => $exception,
                 'path' => $this->store->path(),
             ]);
@@ -46,17 +46,17 @@ final class RuntimeFilesystemConfigurator
             : 'local';
 
         if (! $this->providerIsComplete($active, $settings)) {
-            $this->logger->warning('The selected Btekno filesystem provider is incomplete. Local storage is active.', [
+            $this->logger->warning('The selected Nuewire filesystem provider is incomplete. Local storage is active.', [
                 'provider' => $active,
             ]);
             $active = 'local';
         }
 
-        $prefix = trim((string) $this->config->get('btekno.filesystem.disk_prefix', 'btekno')) ?: 'btekno';
+        $prefix = trim((string) $this->config->get('nuewire.filesystem.disk_prefix', 'nuewire')) ?: 'nuewire';
 
-        if ($this->config->get('btekno.filesystem.host_default_disk') === null) {
+        if ($this->config->get('nuewire.filesystem.host_default_disk') === null) {
             $this->config->set(
-                'btekno.filesystem.host_default_disk',
+                'nuewire.filesystem.host_default_disk',
                 (string) $this->config->get('filesystems.default', 'local'),
             );
         }
@@ -79,18 +79,18 @@ final class RuntimeFilesystemConfigurator
         $activeDirectory = $this->directories->normalize(data_get($settings, "providers.{$active}.directory", ''));
 
         $this->config->set("filesystems.disks.{$prefix}", $activeConfig);
-        $this->config->set('btekno.filesystem.active_provider', $active);
-        $this->config->set('btekno.filesystem.active_disk', $activeDisk);
-        $this->config->set('btekno.filesystem.active_directory', $activeDirectory);
-        $this->config->set('btekno.filesystem.alias_disk', $prefix);
+        $this->config->set('nuewire.filesystem.active_provider', $active);
+        $this->config->set('nuewire.filesystem.active_disk', $activeDisk);
+        $this->config->set('nuewire.filesystem.active_directory', $activeDirectory);
+        $this->config->set('nuewire.filesystem.alias_disk', $prefix);
         $this->filesystems->forgetDisk($prefix);
 
-        if ((bool) ($settings['set_as_default'] ?? $this->config->get('btekno.filesystem.set_as_default', true))) {
+        if ((bool) ($settings['set_as_default'] ?? $this->config->get('nuewire.filesystem.set_as_default', true))) {
             $this->config->set('filesystems.default', $activeDisk);
         } else {
             $this->config->set(
                 'filesystems.default',
-                (string) $this->config->get('btekno.filesystem.host_default_disk', 'local'),
+                (string) $this->config->get('nuewire.filesystem.host_default_disk', 'local'),
             );
         }
 
@@ -111,7 +111,7 @@ final class RuntimeFilesystemConfigurator
                     $this->directories->normalize(data_get($settings, "providers.{$provider}.directory", '')),
                 );
             } catch (Throwable $exception) {
-                $this->logger->warning('An invalid Btekno filesystem base directory was ignored.', [
+                $this->logger->warning('An invalid Nuewire filesystem base directory was ignored.', [
                     'provider' => $provider,
                     'exception' => $exception,
                 ]);

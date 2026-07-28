@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Support;
+namespace Nuewire\Filesystem\Support;
 
 use InvalidArgumentException;
 
@@ -36,14 +36,14 @@ final class FilesystemConfigFactory
     private function local(array $settings, bool $throw): array
     {
         $directory = $this->directories->normalize($settings['directory'] ?? '');
-        $root = (string) config('btekno.filesystem.local.root', storage_path('app/public'));
-        $url = (string) config('btekno.filesystem.local.url', rtrim((string) config('app.url'), '/').'/storage');
+        $root = (string) config('nuewire.filesystem.local.root', storage_path('app/public'));
+        $url = (string) config('nuewire.filesystem.local.url', rtrim((string) config('app.url'), '/').'/storage');
 
         return [
             'driver' => 'local',
             'root' => $this->directories->appendToPath($root, $directory),
             'url' => $this->directories->appendToUrl($url, $directory),
-            'visibility' => (string) config('btekno.filesystem.local.visibility', 'public'),
+            'visibility' => (string) config('nuewire.filesystem.local.visibility', 'public'),
             'throw' => $throw,
         ];
     }

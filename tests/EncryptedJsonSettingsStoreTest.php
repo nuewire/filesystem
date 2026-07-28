@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Tests;
+namespace Nuewire\Filesystem\Tests;
 
-use Btekno\Filesystem\Support\EncryptedJsonSettingsStore;
+use Nuewire\Filesystem\Support\EncryptedJsonSettingsStore;
 
 final class EncryptedJsonSettingsStoreTest extends TestCase
 {
@@ -25,12 +25,12 @@ final class EncryptedJsonSettingsStoreTest extends TestCase
         self::assertSame('super-secret-value', $store->read()['providers']['s3']['secret']);
     }
 
-    public function test_it_uses_the_shared_btekno_directory(): void
+    public function test_it_uses_the_shared_nuewire_directory(): void
     {
         $store = $this->app->make(EncryptedJsonSettingsStore::class);
 
         self::assertSame(
-            $this->app->storagePath('app/private/.btekno/filesystem.json'),
+            $this->app->storagePath('app/private/.nuewire/filesystem.json'),
             $store->path(),
         );
     }

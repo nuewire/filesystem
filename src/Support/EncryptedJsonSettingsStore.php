@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Support;
+namespace Nuewire\Filesystem\Support;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -39,35 +39,35 @@ final class EncryptedJsonSettingsStore
                 $contents = $this->files->get($this->path);
 
                 if (trim($contents) === '') {
-                    throw new RuntimeException('Btekno filesystem settings file is empty.');
+                    throw new RuntimeException('Nuewire filesystem settings file is empty.');
                 }
 
                 $envelope = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 
                 if (! is_array($envelope) || ! is_string($envelope['ciphertext'] ?? null)) {
-                    throw new RuntimeException('Btekno filesystem settings envelope is invalid.');
+                    throw new RuntimeException('Nuewire filesystem settings envelope is invalid.');
                 }
 
                 $plaintext = $this->encrypter()->decryptString($envelope['ciphertext']);
                 $settings = json_decode($plaintext, true, 512, JSON_THROW_ON_ERROR);
 
                 if (! is_array($settings)) {
-                    throw new RuntimeException('Btekno filesystem settings payload is invalid.');
+                    throw new RuntimeException('Nuewire filesystem settings payload is invalid.');
                 }
 
                 return array_replace_recursive($this->defaults(), $settings);
             } catch (JsonException $exception) {
-                throw new RuntimeException('Btekno filesystem settings contain invalid JSON.', 0, $exception);
+                throw new RuntimeException('Nuewire filesystem settings contain invalid JSON.', 0, $exception);
             } catch (DecryptException $exception) {
                 throw new RuntimeException(
-                    'Btekno filesystem settings could not be decrypted. Check APP_KEY and APP_PREVIOUS_KEYS.',
+                    'Nuewire filesystem settings could not be decrypted. Check APP_KEY and APP_PREVIOUS_KEYS.',
                     0,
                     $exception,
                 );
             } catch (RuntimeException $exception) {
                 throw $exception;
             } catch (Throwable $exception) {
-                throw new RuntimeException('Btekno filesystem settings could not be read.', 0, $exception);
+                throw new RuntimeException('Nuewire filesystem settings could not be read.', 0, $exception);
             }
         });
     }
@@ -91,7 +91,7 @@ final class EncryptedJsonSettingsStore
                 $temporaryPath = $this->path.'.tmp.'.bin2hex(random_bytes(8));
 
                 if ($this->files->put($temporaryPath, $envelope, true) === false) {
-                    throw new RuntimeException('Btekno filesystem settings could not be written.');
+                    throw new RuntimeException('Nuewire filesystem settings could not be written.');
                 }
 
                 @chmod($temporaryPath, 0600);
@@ -104,12 +104,12 @@ final class EncryptedJsonSettingsStore
 
                 if (! @rename($temporaryPath, $this->path)) {
                     $this->files->delete($temporaryPath);
-                    throw new RuntimeException('Btekno filesystem settings could not be moved into place.');
+                    throw new RuntimeException('Nuewire filesystem settings could not be moved into place.');
                 }
 
                 @chmod($this->path, 0600);
             } catch (JsonException $exception) {
-                throw new RuntimeException('Btekno filesystem settings could not be encoded.', 0, $exception);
+                throw new RuntimeException('Nuewire filesystem settings could not be encoded.', 0, $exception);
             }
         });
     }
@@ -132,7 +132,7 @@ final class EncryptedJsonSettingsStore
         return [
             'version' => 1,
             'active' => 'local',
-            'set_as_default' => (bool) config('btekno.filesystem.set_as_default', true),
+            'set_as_default' => (bool) config('nuewire.filesystem.set_as_default', true),
             'providers' => [
                 'local' => [
                     'directory' => '',
@@ -178,12 +178,12 @@ final class EncryptedJsonSettingsStore
         $handle = @fopen($lockPath, 'c+');
 
         if ($handle === false) {
-            throw new RuntimeException('Btekno filesystem settings lock could not be opened.');
+            throw new RuntimeException('Nuewire filesystem settings lock could not be opened.');
         }
 
         try {
             if (! flock($handle, $operation)) {
-                throw new RuntimeException('Btekno filesystem settings lock could not be acquired.');
+                throw new RuntimeException('Nuewire filesystem settings lock could not be acquired.');
             }
 
             return $callback();

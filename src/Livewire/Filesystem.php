@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Livewire;
+namespace Nuewire\Filesystem\Livewire;
 
-use Btekno\Filesystem\Support\ConnectionTester;
-use Btekno\Filesystem\Support\EncryptedJsonSettingsStore;
-use Btekno\Filesystem\Support\RuntimeFilesystemConfigurator;
-use Btekno\Filesystem\Support\StorageDirectory;
+use Nuewire\Filesystem\Support\ConnectionTester;
+use Nuewire\Filesystem\Support\EncryptedJsonSettingsStore;
+use Nuewire\Filesystem\Support\RuntimeFilesystemConfigurator;
+use Nuewire\Filesystem\Support\StorageDirectory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -129,11 +129,11 @@ final class Filesystem extends Component
         $store = app(EncryptedJsonSettingsStore::class);
         $settingsPath = str_replace(base_path().DIRECTORY_SEPARATOR, '', $store->path());
 
-        return view('btekno-filesystem::livewire.filesystem', [
+        return view('nuewire-filesystem::livewire.filesystem', [
             'settingsPath' => $settingsPath,
             'settingsExist' => $store->exists(),
-            'activeDisk' => (string) config('btekno.filesystem.active_disk', 'btekno-local'),
-            'activeDirectory' => (string) config('btekno.filesystem.active_directory', ''),
+            'activeDisk' => (string) config('nuewire.filesystem.active_disk', 'nuewire-local'),
+            'activeDirectory' => (string) config('nuewire.filesystem.active_directory', ''),
             'storageLinkExists' => is_link(public_path('storage')) || file_exists(public_path('storage')),
             'localeOptions' => $this->localeOptions(),
         ]);
@@ -338,7 +338,7 @@ final class Filesystem extends Component
      */
     private function supportedLocales(): array
     {
-        $configured = config('btekno.filesystem.supported_locales', ['id', 'en']);
+        $configured = config('nuewire.filesystem.supported_locales', ['id', 'en']);
         $locales = is_array($configured) ? $configured : ['id', 'en'];
         $locales = array_values(array_filter(
             array_map(static fn (mixed $locale): string => strtolower(trim((string) $locale)), $locales),
@@ -354,11 +354,11 @@ final class Filesystem extends Component
             return $this->normalizeLocale($requested);
         }
 
-        if ((bool) config('btekno.filesystem.remember_locale', true)) {
+        if ((bool) config('nuewire.filesystem.remember_locale', true)) {
             try {
                 $stored = session()->get((string) config(
-                    'btekno.filesystem.locale_session_key',
-                    'btekno.filesystem.locale',
+                    'nuewire.filesystem.locale_session_key',
+                    'nuewire.filesystem.locale',
                 ));
 
                 if (is_string($stored) && trim($stored) !== '') {
@@ -369,7 +369,7 @@ final class Filesystem extends Component
             }
         }
 
-        return $this->normalizeLocale((string) config('btekno.filesystem.locale', 'id'));
+        return $this->normalizeLocale((string) config('nuewire.filesystem.locale', 'id'));
     }
 
     private function normalizeLocale(string $locale): string
@@ -382,7 +382,7 @@ final class Filesystem extends Component
             return $locale;
         }
 
-        $configuredDefault = strtolower(trim((string) config('btekno.filesystem.locale', 'id')));
+        $configuredDefault = strtolower(trim((string) config('nuewire.filesystem.locale', 'id')));
 
         return in_array($configuredDefault, $supported, true)
             ? $configuredDefault
@@ -391,13 +391,13 @@ final class Filesystem extends Component
 
     private function rememberLocale(): void
     {
-        if (! (bool) config('btekno.filesystem.remember_locale', true)) {
+        if (! (bool) config('nuewire.filesystem.remember_locale', true)) {
             return;
         }
 
         try {
             session()->put(
-                (string) config('btekno.filesystem.locale_session_key', 'btekno.filesystem.locale'),
+                (string) config('nuewire.filesystem.locale_session_key', 'nuewire.filesystem.locale'),
                 $this->locale,
             );
         } catch (Throwable) {
@@ -410,20 +410,20 @@ final class Filesystem extends Component
      */
     private function translate(string $key, array $replace = []): string
     {
-        return (string) trans("btekno-filesystem::filesystem.{$key}", $replace, $this->locale);
+        return (string) trans("nuewire-filesystem::filesystem.{$key}", $replace, $this->locale);
     }
 
     private function ensureAuthorized(): void
     {
-        $gate = trim((string) config('btekno.filesystem.authorization.gate', ''));
+        $gate = trim((string) config('nuewire.filesystem.authorization.gate', ''));
 
         if ($gate !== '') {
             abort_unless(Gate::allows($gate), 403);
             return;
         }
 
-        if ((bool) config('btekno.filesystem.authorization.require_authenticated_user', true)) {
-            $guard = trim((string) config('btekno.filesystem.authorization.guard', ''));
+        if ((bool) config('nuewire.filesystem.authorization.require_authenticated_user', true)) {
+            $guard = trim((string) config('nuewire.filesystem.authorization.guard', ''));
             $authenticated = $guard === '' ? Auth::check() : Auth::guard($guard)->check();
             abort_unless($authenticated, 403);
         }

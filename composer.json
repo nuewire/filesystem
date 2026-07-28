@@ -1,5 +1,5 @@
 {
-    "name": "btekno/filesystem",
+    "name": "nuewire/filesystem",
     "description": "Encrypted, file-based filesystem settings for Laravel with a single Livewire component.",
     "keywords": [
         "laravel",
@@ -12,7 +12,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Btekno"
+            "name": "Nuewire"
         }
     ],
     "require": {
@@ -34,18 +34,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Btekno\\Filesystem\\": "src/"
+            "Nuewire\\Filesystem\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Btekno\\Filesystem\\Tests\\": "tests/"
+            "Nuewire\\Filesystem\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Btekno\\Filesystem\\FilesystemServiceProvider"
+                "Nuewire\\Filesystem\\FilesystemServiceProvider"
             ]
         }
     },
@@ -56,6 +56,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "suggest": {
-        "btekno/platform": "Adds the shared Btekno admin layout and navigation."
+        "nuewire/platform": "Adds the shared Nuewire admin layout and navigation."
     }
 }

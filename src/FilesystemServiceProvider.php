@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem;
+namespace Nuewire\Filesystem;
 
-use Btekno\Filesystem\Livewire\Filesystem;
-use Btekno\Filesystem\Support\ConnectionTester;
-use Btekno\Filesystem\Support\EncryptedJsonSettingsStore;
-use Btekno\Filesystem\Support\FilesystemConfigFactory;
-use Btekno\Filesystem\Support\RuntimeFilesystemConfigurator;
-use Btekno\Filesystem\Support\StorageDirectory;
+use Nuewire\Filesystem\Livewire\Filesystem;
+use Nuewire\Filesystem\Support\ConnectionTester;
+use Nuewire\Filesystem\Support\EncryptedJsonSettingsStore;
+use Nuewire\Filesystem\Support\FilesystemConfigFactory;
+use Nuewire\Filesystem\Support\RuntimeFilesystemConfigurator;
+use Nuewire\Filesystem\Support\StorageDirectory;
 use Illuminate\Filesystem\Filesystem as LaravelFilesystem;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\ServiceProvider;
@@ -18,11 +18,11 @@ use Psr\Log\LoggerInterface;
 
 final class FilesystemServiceProvider extends ServiceProvider
 {
-    private const CONFIG_KEY = 'btekno.filesystem';
+    private const CONFIG_KEY = 'nuewire.filesystem';
 
     public function register(): void
     {
-        $this->replaceConfigRecursivelyFrom(__DIR__.'/../config/btekno/filesystem.php', self::CONFIG_KEY);
+        $this->replaceConfigRecursivelyFrom(__DIR__.'/../config/nuewire/filesystem.php', self::CONFIG_KEY);
         $this->app->singleton(FilesystemConfigFactory::class);
 
         $this->app->singleton(EncryptedJsonSettingsStore::class, function ($app): EncryptedJsonSettingsStore {
@@ -57,23 +57,23 @@ final class FilesystemServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'btekno-filesystem');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'btekno-filesystem');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nuewire-filesystem');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-filesystem');
 
         $this->registerLivewireComponent();
         $this->registerPlatformNavigation();
 
         $this->publishes([
-            __DIR__.'/../config/btekno/filesystem.php' => config_path('btekno/filesystem.php'),
-        ], 'btekno-filesystem-config');
+            __DIR__.'/../config/nuewire/filesystem.php' => config_path('nuewire/filesystem.php'),
+        ], 'nuewire-filesystem-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/btekno-filesystem'),
-        ], 'btekno-filesystem-views');
+            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire-filesystem'),
+        ], 'nuewire-filesystem-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/btekno-filesystem'),
-        ], 'btekno-filesystem-translations');
+            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire-filesystem'),
+        ], 'nuewire-filesystem-translations');
     }
 
     private function registerLivewireComponent(): void
@@ -82,7 +82,7 @@ final class FilesystemServiceProvider extends ServiceProvider
 
         if (method_exists($livewire, 'addNamespace')) {
             Livewire::resolveMissingComponent(
-                static fn (string $name): ?string => $name === 'btekno::filesystem'
+                static fn (string $name): ?string => $name === 'nuewire::filesystem'
                     ? Filesystem::class
                     : null,
             );
@@ -90,12 +90,12 @@ final class FilesystemServiceProvider extends ServiceProvider
             return;
         }
 
-        Livewire::component('btekno::filesystem', Filesystem::class);
+        Livewire::component('nuewire::filesystem', Filesystem::class);
     }
 
     private function registerPlatformNavigation(): void
     {
-        $registryClass = 'Btekno\\Platform\\Navigation\\NavigationRegistry';
+        $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
 
         if (! $this->app->bound($registryClass)) {
             return;
@@ -105,7 +105,7 @@ final class FilesystemServiceProvider extends ServiceProvider
             'label' => ['id' => 'Filesystem', 'en' => 'Filesystem'],
             'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
             'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
-            'component' => 'btekno::filesystem',
+            'component' => 'nuewire::filesystem',
             'icon' => 'F',
             'order' => 20,
         ]);

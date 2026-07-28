@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Support;
+namespace Nuewire\Filesystem\Support;
 
 use Illuminate\Filesystem\FilesystemManager;
 use RuntimeException;
@@ -22,10 +22,10 @@ final class ConnectionTester
      */
     public function test(string $provider, array $settings, ?string $locale = null): array
     {
-        $locale ??= (string) config('btekno.filesystem.locale', 'id');
+        $locale ??= (string) config('nuewire.filesystem.locale', 'id');
         $disk = $this->filesystems->build($this->factory->forProvider($provider, $settings, true));
-        $path = '.btekno-test/'.bin2hex(random_bytes(12)).'.txt';
-        $payload = 'btekno-filesystem:'.bin2hex(random_bytes(16));
+        $path = '.nuewire-test/'.bin2hex(random_bytes(12)).'.txt';
+        $payload = 'nuewire-filesystem:'.bin2hex(random_bytes(16));
         $url = null;
 
         try {
@@ -64,6 +64,6 @@ final class ConnectionTester
 
     private function translate(string $key, string $locale): string
     {
-        return (string) trans("btekno-filesystem::filesystem.{$key}", [], $locale);
+        return (string) trans("nuewire-filesystem::filesystem.{$key}", [], $locale);
     }
 }

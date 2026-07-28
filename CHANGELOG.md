@@ -4,4 +4,4 @@
 
 - Local, S3, and Bunny CDN providers.
 - Encrypted JSON settings.
-- Shared Btekno Livewire component.
+- Shared Nuewire Livewire component.

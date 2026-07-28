@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php"
          colors="true">
     <testsuites>
-        <testsuite name="Btekno Filesystem">
+        <testsuite name="Nuewire Filesystem">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

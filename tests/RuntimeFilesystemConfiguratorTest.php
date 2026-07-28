@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Tests;
+namespace Nuewire\Filesystem\Tests;
 
-use Btekno\Filesystem\Support\EncryptedJsonSettingsStore;
-use Btekno\Filesystem\Support\RuntimeFilesystemConfigurator;
+use Nuewire\Filesystem\Support\EncryptedJsonSettingsStore;
+use Nuewire\Filesystem\Support\RuntimeFilesystemConfigurator;
 
 final class RuntimeFilesystemConfiguratorTest extends TestCase
 {
@@ -13,16 +13,16 @@ final class RuntimeFilesystemConfiguratorTest extends TestCase
     {
         $this->app->make(RuntimeFilesystemConfigurator::class)->apply();
 
-        self::assertSame('local', config('btekno.filesystem.active_provider'));
-        self::assertSame('btekno-local', config('btekno.filesystem.active_disk'));
-        self::assertSame('btekno-local', config('filesystems.default'));
-        self::assertSame('local', config('filesystems.disks.btekno-local.driver'));
+        self::assertSame('local', config('nuewire.filesystem.active_provider'));
+        self::assertSame('nuewire-local', config('nuewire.filesystem.active_disk'));
+        self::assertSame('nuewire-local', config('filesystems.default'));
+        self::assertSame('local', config('filesystems.disks.nuewire-local.driver'));
     }
 
     public function test_it_applies_a_local_base_directory_to_root_and_url(): void
     {
         config()->set('app.url', 'https://example.test');
-        config()->set('btekno.filesystem.local.url', 'https://example.test/storage');
+        config()->set('nuewire.filesystem.local.url', 'https://example.test/storage');
 
         $store = $this->app->make(EncryptedJsonSettingsStore::class);
         $settings = $store->defaults();
@@ -31,14 +31,14 @@ final class RuntimeFilesystemConfiguratorTest extends TestCase
 
         $this->app->make(RuntimeFilesystemConfigurator::class)->apply();
 
-        self::assertSame('media/uploads', config('btekno.filesystem.active_directory'));
+        self::assertSame('media/uploads', config('nuewire.filesystem.active_directory'));
         self::assertSame(
             rtrim(storage_path('app/public'), '/\\').DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'uploads',
-            config('filesystems.disks.btekno-local.root'),
+            config('filesystems.disks.nuewire-local.root'),
         );
         self::assertSame(
             'https://example.test/storage/media/uploads',
-            config('filesystems.disks.btekno-local.url'),
+            config('filesystems.disks.nuewire-local.url'),
         );
     }
 
@@ -54,7 +54,7 @@ final class RuntimeFilesystemConfiguratorTest extends TestCase
         $this->app->make(RuntimeFilesystemConfigurator::class)->apply();
 
         self::assertSame('host-disk', config('filesystems.default'));
-        self::assertSame('btekno-local', config('btekno.filesystem.active_disk'));
+        self::assertSame('nuewire-local', config('nuewire.filesystem.active_disk'));
     }
 
     public function test_it_registers_named_cloud_disks_and_selects_the_active_one(): void
@@ -74,11 +74,11 @@ final class RuntimeFilesystemConfiguratorTest extends TestCase
 
         $this->app->make(RuntimeFilesystemConfigurator::class)->apply();
 
-        self::assertSame('bunnycdn', config('btekno.filesystem.active_provider'));
-        self::assertSame('btekno-bunnycdn', config('filesystems.default'));
-        self::assertSame('s3', config('filesystems.disks.btekno-bunnycdn.driver'));
-        self::assertTrue(config('filesystems.disks.btekno-bunnycdn.use_path_style_endpoint'));
-        self::assertSame('applications/nongki', config('filesystems.disks.btekno-bunnycdn.root'));
-        self::assertSame('applications/nongki', config('btekno.filesystem.active_directory'));
+        self::assertSame('bunnycdn', config('nuewire.filesystem.active_provider'));
+        self::assertSame('nuewire-bunnycdn', config('filesystems.default'));
+        self::assertSame('s3', config('filesystems.disks.nuewire-bunnycdn.driver'));
+        self::assertTrue(config('filesystems.disks.nuewire-bunnycdn.use_path_style_endpoint'));
+        self::assertSame('applications/nongki', config('filesystems.disks.nuewire-bunnycdn.root'));
+        self::assertSame('applications/nongki', config('nuewire.filesystem.active_directory'));
     }
 }

@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Filesystem\Tests;
+namespace Nuewire\Filesystem\Tests;
 
-use Btekno\Filesystem\FilesystemServiceProvider;
+use Nuewire\Filesystem\FilesystemServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 final class ConfigurationTest extends TestCase
 {
-    public function test_configuration_uses_the_nested_btekno_key(): void
+    public function test_configuration_uses_the_nested_nuewire_key(): void
     {
-        self::assertSame('id', config('btekno.filesystem.locale'));
+        self::assertSame('id', config('nuewire.filesystem.locale'));
         self::assertSame(
-            storage_path('app/private/.btekno/filesystem.json'),
-            config('btekno.filesystem.settings_path'),
+            storage_path('app/private/.nuewire/filesystem.json'),
+            config('nuewire.filesystem.settings_path'),
         );
     }
 
-    public function test_configuration_is_published_to_the_btekno_directory(): void
+    public function test_configuration_is_published_to_the_nuewire_directory(): void
     {
         $paths = ServiceProvider::pathsToPublish(
             FilesystemServiceProvider::class,
-            'btekno-filesystem-config',
+            'nuewire-filesystem-config',
         );
 
-        self::assertContains(config_path('btekno/filesystem.php'), array_values($paths));
+        self::assertContains(config_path('nuewire/filesystem.php'), array_values($paths));
     }
 }
