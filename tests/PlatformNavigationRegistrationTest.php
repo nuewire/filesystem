@@ -21,7 +21,7 @@ final class PlatformNavigationRegistrationTest extends TestCase
         self::assertSame('settings', $registry->pages['filesystem.settings']['area']);
         self::assertSame('configuration', $registry->pages['filesystem.settings']['group']);
         self::assertSame('storage', $registry->pages['filesystem.settings']['slug']);
-        self::assertSame('nuewire::filesystem', $registry->pages['filesystem.settings']['component']);
+        self::assertSame('nuewire-filesystem', $registry->pages['filesystem.settings']['component']);
     }
 }
 

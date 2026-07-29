@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+
+- Replaced the `nuewire::filesystem` runtime alias with `nuewire-filesystem` for Livewire 4 compatibility.
+
 ## 1.3.0
 
 - Registered Storage as `filesystem.settings` under Settings → Configuration for Platform 2.

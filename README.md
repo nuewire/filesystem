@@ -12,7 +12,7 @@ php artisan optimize:clear
 ## Component
 
 ```blade
-<livewire:nuewire::filesystem />
+<livewire:nuewire-filesystem />
 ```
 
 With `nuewire/platform` 2, the page appears under **Settings → Configuration → Storage** at `/admin/settings/storage`.

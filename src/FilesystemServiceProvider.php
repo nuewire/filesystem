@@ -83,7 +83,7 @@ final class FilesystemServiceProvider extends ServiceProvider
     private function registerLivewireComponent(): void
     {
         $registrar = $this->app->make(LivewireComponentRegistrar::class);
-        $registrar->register('nuewire::filesystem', Filesystem::class);
+        $registrar->register('nuewire-filesystem', Filesystem::class);
     }
 
     private function registerPlatformNavigation(): void
@@ -100,7 +100,7 @@ final class FilesystemServiceProvider extends ServiceProvider
                     'label' => ['id' => 'Filesystem', 'en' => 'Filesystem'],
                     'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
                     'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
-                    'component' => 'nuewire::filesystem',
+                    'component' => 'nuewire-filesystem',
                     'permission' => 'filesystem.view',
                     'icon' => 'F',
                     'order' => 20,
@@ -116,7 +116,7 @@ final class FilesystemServiceProvider extends ServiceProvider
                 'aliases' => ['filesystem'],
                 'label' => ['id' => 'Storage', 'en' => 'Storage'],
                 'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
-                'component' => 'nuewire::filesystem',
+                'component' => 'nuewire-filesystem',
                 'permission' => 'filesystem.view',
                 'icon' => 'storage',
                 'order' => 30,
