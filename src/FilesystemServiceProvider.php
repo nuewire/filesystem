@@ -88,21 +88,38 @@ final class FilesystemServiceProvider extends ServiceProvider
 
     private function registerPlatformNavigation(): void
     {
-        $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
+        $registryClass = 'Nuewire\Platform\Navigation\NavigationRegistry';
 
         $this->app->afterResolving($registryClass, static function (object $registry): void {
             if (! method_exists($registry, 'register')) {
                 return;
             }
 
-            $registry->register('filesystem', [
-                'label' => ['id' => 'Filesystem', 'en' => 'Filesystem'],
+            if (! method_exists($registry, 'registerArea')) {
+                $registry->register('filesystem', [
+                    'label' => ['id' => 'Filesystem', 'en' => 'Filesystem'],
+                    'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
+                    'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
+                    'component' => 'nuewire::filesystem',
+                    'permission' => 'filesystem.view',
+                    'icon' => 'F',
+                    'order' => 20,
+                ]);
+
+                return;
+            }
+
+            $registry->register('filesystem.settings', [
+                'area' => 'settings',
+                'group' => 'configuration',
+                'slug' => 'storage',
+                'aliases' => ['filesystem'],
+                'label' => ['id' => 'Storage', 'en' => 'Storage'],
                 'description' => ['id' => 'Atur lokasi penyimpanan file.', 'en' => 'Configure file storage.'],
-                'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
                 'component' => 'nuewire::filesystem',
                 'permission' => 'filesystem.view',
-                'icon' => 'F',
-                'order' => 20,
+                'icon' => 'storage',
+                'order' => 30,
             ]);
         });
     }

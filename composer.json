@@ -57,6 +57,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "suggest": {
-        "nuewire/platform": "Adds the shared Nuewire admin layout and navigation."
+        "nuewire/platform": "Adds Storage under Settings > Configuration in the Nuewire admin navigation."
     }
 }

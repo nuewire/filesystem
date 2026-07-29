@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0
+
+- Registered Storage as `filesystem.settings` under Settings → Configuration for Platform 2.
+- Added the canonical `storage` slug with a legacy `filesystem` alias.
+
 ## 1.2.0
 
 - Adopted shared Nuewire path and Livewire registration utilities.
