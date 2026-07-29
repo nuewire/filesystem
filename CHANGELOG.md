@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Added active storage, local usage, and available-provider dashboard widgets.
+- Remote storage usage is intentionally not scanned automatically.
+
 ## 1.3.1
 
 - Replaced the `nuewire::filesystem` runtime alias with `nuewire-filesystem` for Livewire 4 compatibility.
